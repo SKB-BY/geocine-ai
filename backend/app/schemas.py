@@ -1,9 +1,7 @@
 from typing import Any, Literal
-
 from pydantic import BaseModel, Field
 
-LocationKind = Literal["film", "investment", "both"]
-
+LocationKind = Literal["selfie", "content", "film", "investment", "both"]
 
 class LocationOut(BaseModel):
     id: int
@@ -26,7 +24,6 @@ class LocationOut(BaseModel):
     match_score: float | None = None
     investment_score: float | None = None
 
-
 class ScoutRequest(BaseModel):
     query: str = Field(..., min_length=3, max_length=2000)
     kind: LocationKind | None = None
@@ -34,14 +31,13 @@ class ScoutRequest(BaseModel):
     lat: float | None = None
     radius_km: float = Field(default=5000, ge=1, le=20000)
     budget_usd: int | None = Field(default=None, ge=0)
+    plan_code: str = "free"
     limit: int = Field(default=12, ge=1, le=50)
-
 
 class ScoutResponse(BaseModel):
     query: str
     parsed: dict[str, Any]
     results: list[LocationOut]
-
 
 class InvestmentRequest(BaseModel):
     query: str = Field(..., min_length=3, max_length=2000)

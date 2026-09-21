@@ -1,27 +1,14 @@
 # GeoCine AI
 
-Ищем места, где можно снять селфи, ролик или сцену. Рядом тот же каталог смотрит инвестор: что за район и какие там риски.
+Ищем места под селфи, ролик или съёмку. Не из короткого списка в базе, а по запросу.
 
-Репозиторий: https://github.com/SKB-BY/geocine-ai
+Сиды в Postgres — это только старт и кэш. На кнопку «Найти» программа разбирает фразу и идёт в OpenStreetMap.
 
-Картинки в `docs/screens/`
+Если есть OPENAI_API_KEY — фразу разбирает модель. Без ключа места всё равно ищутся по карте.
 
-## Как запустить
+Картинки в docs/screens/ не трогать.
 
 ```bash
-git clone https://github.com/SKB-BY/geocine-ai.git
-cd geocine-ai
 cp .env.example .env
-docker compose down -v
 docker compose up --build
-```
-
-Открыть http://localhost:8000
-
-Если база поднималась на старой схеме, `down -v` обязателен.
-
-В каталоге больше двадцати точек.
-
-```bash
-python3 tests/test_query.py
 ```

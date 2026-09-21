@@ -1,20 +1,27 @@
 # GeoCine AI
 
-Локации для **селфи, рилс, кино и инвестиций**.
+Ищем места, где можно снять селфи, ролик или сцену. Рядом тот же каталог смотрит инвестор: что за район и какие там риски.
 
-https://github.com/SKB-BY/geocine-ai
+Репозиторий: https://github.com/SKB-BY/geocine-ai
 
-## Экраны
+Картинки в `docs/screens/` уже стоят свои — их не перезаписывать.
 
-- Карта селфи: [docs/screens/01-map.jpg](docs/screens/01-map.jpg)
-- Карточка: [docs/screens/02-card.jpg](docs/screens/02-card.jpg)
-- Камера: [docs/screens/03-camera.jpg](docs/screens/03-camera.jpg)
-- Paywall: [docs/screens/04-paywall.jpg](docs/screens/04-paywall.jpg)
-- UGC: [docs/screens/05-add-spot.jpg](docs/screens/05-add-spot.jpg)
-- Оплата: [docs/screens/payment-flow.jpg](docs/screens/payment-flow.jpg)
-
-Полные фото-мокапы — в `docs/screens/` локально и в дизайн-галерее.
+## Как запустить
 
 ```bash
+git clone https://github.com/SKB-BY/geocine-ai.git
+cd geocine-ai
+cp .env.example .env
+docker compose down -v
 docker compose up --build
+```
+
+Открыть http://localhost:8000
+
+Если база поднималась на старой схеме, `down -v` обязателен.
+
+В каталоге больше двадцати точек. Запрос «селфи в городе у воды» поднимает набережные, а не вулканы.
+
+```bash
+python3 tests/test_query.py
 ```

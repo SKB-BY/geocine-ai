@@ -1,5 +1,7 @@
-# Платёжный контур
+# Оплата
 
-Поиск → quota → 402 → paywall → Stripe/ЮKassa webhook → plan_code → scout.
+Если за день слишком много поисков, сервер отвечает 402.
 
-API: GET /api/billing/plans, POST /api/payments/intent, POST /api/payments/webhook
+Дальше: Creator или Studio → Stripe/ЮKassa → вебхук → plan_code.
+
+Секреты только в env.

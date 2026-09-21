@@ -9,12 +9,9 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.db import close, connect
-from app.routers import billing, investments, locations, scout, spots, tiles
+from app.routers import billing, investments, locations, payments, scout, spots, tiles
 
-FRONTEND_DIR = Path(os.environ.get(
-    "FRONTEND_DIR",
-    str(Path(__file__).resolve().parents[2] / "frontend"),
-))
+FRONTEND_DIR = Path(os.environ.get("FRONTEND_DIR", str(Path(__file__).resolve().parents[2] / "frontend")))
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
@@ -22,12 +19,7 @@ async def lifespan(_: FastAPI):
     yield
     await close()
 
-app = FastAPI(
-    title="GeoCine AI",
-    version="0.2.0",
-    description="Локации для селфи, контента, кино и инвестиций. GIS + AI.",
-    lifespan=lifespan,
-)
+app = FastAPI(title="GeoCine AI", version="0.2.1", description="Локации для селфи, контента, кино и инвестиций.", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origin_list or ["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 app.include_router(locations.router)
 app.include_router(scout.router)
@@ -35,6 +27,7 @@ app.include_router(investments.router)
 app.include_router(tiles.router)
 app.include_router(billing.router)
 app.include_router(spots.router)
+app.include_router(payments.router)
 
 @app.get("/api/health")
 async def health():

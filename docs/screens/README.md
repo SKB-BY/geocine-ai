@@ -1,8 +1,10 @@
-# Экраны GeoCine AI
+# Экраны
 
-- [01-map.svg](01-map.svg) карта селфи
-- [02-card.svg](02-card.svg) карточка
-- [03-camera.svg](03-camera.svg) камера
-- [04-paywall.svg](04-paywall.svg) оплата
-- [05-add-spot.svg](05-add-spot.svg) UGC
-- [payment-flow.svg](payment-flow.svg) контур оплаты
+Картинки уже заменены в репозитории — их не трогать.
+
+- 01-map.jpg
+- 02-card.jpg
+- 03-camera.jpg
+- 04-paywall.jpg
+- 05-add-spot.jpg
+- payment-flow.jpg

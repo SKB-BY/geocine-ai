@@ -1,20 +1,24 @@
-INSERT INTO locations (
-    slug, name, country, region, kind, tags, description,
-    cost_estimate_usd, shooting_cost_usd, weather_risk, flood_risk,
-    permit_difficulty, growth_potential, geom
-) VALUES
-('minsk-center', 'Минск, центр и набережная Свислочи', 'BY', 'Минск', 'both', ARRAY['city','historic','water'], 'Городские панорамы, советский модернизм, набережная.', 420000, 85000, 0.28, 0.22, 0.35, 0.62, ST_SetSRID(ST_MakePoint(27.5615, 53.9023), 4326)),
-('brest-fortress', 'Брестская крепость', 'BY', 'Брест', 'film', ARRAY['historic','city'], 'Монументальная историческая локация.', 180000, 62000, 0.30, 0.18, 0.72, 0.31, ST_SetSRID(ST_MakePoint(23.6550, 52.0830), 4326)),
-('belovezhskaya-pushcha', 'Беловежская пуща', 'BY', 'Брестская область', 'both', ARRAY['forest','village'], 'Древний лес, экотуризм.', 210000, 54000, 0.34, 0.20, 0.68, 0.48, ST_SetSRID(ST_MakePoint(23.8800, 52.6300), 4326)),
-('braslav-lakes', 'Браславские озёра', 'BY', 'Витебская область', 'both', ARRAY['water','forest','village'], 'Озёрный край, рассветы.', 160000, 41000, 0.36, 0.27, 0.40, 0.52, ST_SetSRID(ST_MakePoint(27.0500, 55.6400), 4326)),
-('moscow-city', 'Москва-Сити', 'RU', 'Москва', 'both', ARRAY['city','industrial'], 'Небоскрёбы, ночные панорамы.', 2400000, 280000, 0.25, 0.16, 0.70, 0.58, ST_SetSRID(ST_MakePoint(37.5390, 55.7473), 4326)),
-('altai-katun', 'Алтай, долина Катуни', 'RU', 'Алтай', 'film', ARRAY['mountain','water','village'], 'Горные долины, река, эпические планы.', 190000, 97000, 0.55, 0.33, 0.45, 0.44, ST_SetSRID(ST_MakePoint(85.9600, 51.7900), 4326)),
-('kamchatka-volcano', 'Камчатка, вулканический район', 'RU', 'Камчатка', 'film', ARRAY['mountain','snow','desert'], 'Инопланетный рельеф.', 120000, 310000, 0.72, 0.15, 0.60, 0.29, ST_SetSRID(ST_MakePoint(158.6500, 53.0500), 4326)),
-('morocco-erg-chebbi', 'Эрг-Шебби, Марокко', 'MA', 'Эр-Рашидия', 'film', ARRAY['desert'], 'Классические дюны для пустынных сцен.', 95000, 120000, 0.40, 0.05, 0.32, 0.37, ST_SetSRID(ST_MakePoint(-4.0000, 31.1700), 4326)),
-('arizona-monument-valley', 'Monument Valley, США', 'US', 'Arizona / Utah', 'film', ARRAY['desert','mountain'], 'Иконический западный ландшафт.', 310000, 210000, 0.33, 0.06, 0.66, 0.41, ST_SetSRID(ST_MakePoint(-110.1667, 36.9833), 4326)),
-('alps-grindelwald', 'Гриндельвальд, Альпы', 'CH', 'Bernese Oberland', 'both', ARRAY['mountain','snow','village'], 'Альпийские вершины.', 890000, 240000, 0.48, 0.14, 0.58, 0.46, ST_SetSRID(ST_MakePoint(8.0400, 46.6240), 4326)),
-('istanbul-historic', 'Стамбул, исторический полуостров', 'TR', 'Стамбул', 'both', ARRAY['city','historic','water'], 'Стык континентов.', 670000, 130000, 0.27, 0.24, 0.50, 0.63, ST_SetSRID(ST_MakePoint(28.9784, 41.0082), 4326)),
-('dubai-creek-harbour', 'Dubai Creek Harbour', 'AE', 'Dubai', 'investment', ARRAY['city','water'], 'Waterfront-девелопмент.', 1800000, 190000, 0.18, 0.12, 0.42, 0.71, ST_SetSRID(ST_MakePoint(55.3300, 25.2050), 4326)),
-('lisbon-alfama', 'Лиссабон, Алфама', 'PT', 'Лиссабон', 'both', ARRAY['city','historic','water'], 'Узкие улицы, свет Атлантики.', 540000, 98000, 0.22, 0.19, 0.38, 0.57, ST_SetSRID(ST_MakePoint(-9.1300, 38.7130), 4326)),
-('tbilisi-old-town', 'Тбилиси, старый город', 'GE', 'Тбилиси', 'both', ARRAY['city','historic','mountain'], 'Рельеф и текстура фасадов.', 280000, 47000, 0.29, 0.21, 0.33, 0.64, ST_SetSRID(ST_MakePoint(44.8070, 41.6930), 4326))
+INSERT INTO locations (slug, name, country, region, kind, tags, description, cost_estimate_usd, shooting_cost_usd, weather_risk, flood_risk, permit_difficulty, growth_potential, geom, crowd_level, selfie_score, content_score, safety_score, price_tier) VALUES
+('minsk-center','Минск, центр и набережная Свислочи','BY','Минск','both',ARRAY['city','historic','water'],'Набережная и центр. Утром спокойно.',420000,85000,0.28,0.22,0.35,0.62,ST_SetSRID(ST_MakePoint(27.5615,53.9023),4326),0.55,0.86,0.80,0.78,'free'),
+('minsk-nemiga-mural','Минск, муралы Немиги','BY','Минск','selfie',ARRAY['city'],'Яркие стены. В будни народу меньше.',0,0,0.22,0.10,0.05,0.40,ST_SetSRID(ST_MakePoint(27.5508,53.9054),4326),0.62,0.95,0.84,0.80,'free'),
+('minsk-troitskoe','Минск, Троицкое предместье','BY','Минск','selfie',ARRAY['city','historic','water'],'Фасады у реки. Бесплатно.',0,15000,0.24,0.16,0.10,0.44,ST_SetSRID(ST_MakePoint(27.5572,53.9086),4326),0.57,0.93,0.82,0.83,'free'),
+('grodno-old-town','Гродно, старый город','BY','Гродно','selfie',ARRAY['city','historic'],'Костёлы и тихие улицы.',0,8000,0.26,0.12,0.08,0.41,ST_SetSRID(ST_MakePoint(23.8313,53.6778),4326),0.34,0.90,0.78,0.85,'free'),
+('brest-fortress','Брестская крепость','BY','Брест','film',ARRAY['historic','city'],'Нужно согласование.',180000,62000,0.30,0.18,0.72,0.31,ST_SetSRID(ST_MakePoint(23.6550,52.0830),4326),0.40,0.35,0.62,0.75,'cheap'),
+('belovezhskaya-pushcha','Беловежская пуща','BY','Брестская область','both',ARRAY['forest','village'],'Старый лес. В будни тихо.',210000,54000,0.34,0.20,0.68,0.48,ST_SetSRID(ST_MakePoint(23.8800,52.6300),4326),0.25,0.74,0.71,0.82,'cheap'),
+('braslav-lakes','Браславские озёра','BY','Витебская область','both',ARRAY['water','forest','village'],'Рассвет на воде.',160000,41000,0.36,0.27,0.40,0.52,ST_SetSRID(ST_MakePoint(27.0500,55.6400),4326),0.22,0.88,0.77,0.84,'free'),
+('moscow-city','Москва-Сити','RU','Москва','both',ARRAY['city','industrial'],'Стекло и вечерний свет.',2400000,280000,0.25,0.16,0.70,0.58,ST_SetSRID(ST_MakePoint(37.5390,55.7473),4326),0.70,0.81,0.90,0.72,'paid'),
+('altai-katun','Алтай, долина Катуни','RU','Алтай','film',ARRAY['mountain','water','village'],'Река и горы.',190000,97000,0.55,0.33,0.45,0.44,ST_SetSRID(ST_MakePoint(85.9600,51.7900),4326),0.20,0.58,0.84,0.70,'cheap'),
+('kamchatka-volcano','Камчатка, вулканический район','RU','Камчатка','film',ARRAY['mountain','snow','desert'],'Странный рельеф.',120000,310000,0.72,0.15,0.60,0.29,ST_SetSRID(ST_MakePoint(158.6500,53.0500),4326),0.10,0.40,0.88,0.55,'paid'),
+('morocco-erg-chebbi','Эрг-Шебби, Марокко','MA','Эр-Рашидия','film',ARRAY['desert'],'Дюны на закате.',95000,120000,0.40,0.05,0.32,0.37,ST_SetSRID(ST_MakePoint(-4.0000,31.1700),4326),0.48,0.91,0.93,0.68,'cheap'),
+('arizona-monument-valley','Monument Valley, США','US','Arizona / Utah','film',ARRAY['desert','mountain'],'Западный кадр.',310000,210000,0.33,0.06,0.66,0.41,ST_SetSRID(ST_MakePoint(-110.1667,36.9833),4326),0.40,0.79,0.92,0.70,'paid'),
+('alps-grindelwald','Гриндельвальд, Альпы','CH','Bernese Oberland','both',ARRAY['mountain','snow','village'],'Альпы.',890000,240000,0.48,0.14,0.58,0.46,ST_SetSRID(ST_MakePoint(8.0400,46.6240),4326),0.60,0.90,0.89,0.80,'paid'),
+('istanbul-historic','Стамбул, исторический полуостров','TR','Стамбул','both',ARRAY['city','historic','water'],'Вода и купола.',670000,130000,0.27,0.24,0.50,0.63,ST_SetSRID(ST_MakePoint(28.9784,41.0082),4326),0.72,0.94,0.91,0.70,'free'),
+('dubai-creek-harbour','Dubai Creek Harbour','AE','Dubai','investment',ARRAY['city','water'],'Набережная и башни.',1800000,190000,0.18,0.12,0.42,0.71,ST_SetSRID(ST_MakePoint(55.3300,25.2050),4326),0.50,0.87,0.85,0.88,'free'),
+('lisbon-alfama','Лиссабон, Алфама','PT','Лиссабон','both',ARRAY['city','historic','water'],'Узкие улицы и свет.',540000,98000,0.22,0.19,0.38,0.57,ST_SetSRID(ST_MakePoint(-9.1300,38.7130),4326),0.58,0.93,0.88,0.82,'free'),
+('tbilisi-old-town','Тбилиси, старый город','GE','Тбилиси','both',ARRAY['city','historic','mountain'],'Рельеф и фактура стен.',280000,47000,0.29,0.21,0.33,0.64,ST_SetSRID(ST_MakePoint(44.8070,41.6930),4326),0.45,0.92,0.86,0.76,'free'),
+('riga-old-town','Рига, старый город','LV','Рига','selfie',ARRAY['city','historic','water'],'Готика и Даугава.',0,22000,0.30,0.21,0.22,0.49,ST_SetSRID(ST_MakePoint(24.1052,56.9496),4326),0.40,0.91,0.82,0.84,'free'),
+('vilnius-uzupis','Вильнюс, Ужупис','LT','Вильнюс','selfie',ARRAY['city','historic','water'],'Квартал у реки.',0,12000,0.28,0.18,0.15,0.47,ST_SetSRID(ST_MakePoint(25.2970,54.6800),4326),0.32,0.89,0.80,0.86,'free'),
+('prague-vltava','Прага, набережная Влтавы','CZ','Прага','both',ARRAY['city','historic','water'],'Мосты и вода.',610000,88000,0.26,0.23,0.36,0.51,ST_SetSRID(ST_MakePoint(14.4140,50.0865),4326),0.68,0.92,0.90,0.80,'free'),
+('barcelona-gotic','Барселона, Готический квартал','ES','Барселона','selfie',ARRAY['city','historic'],'Камень и тень. Утром лучше.',720000,110000,0.20,0.14,0.34,0.54,ST_SetSRID(ST_MakePoint(2.1770,41.3830),4326),0.74,0.90,0.87,0.73,'free'),
+('krakow-wisla','Краков, набережная Вислы','PL','Краков','selfie',ARRAY['city','historic','water'],'Река и старый город.',0,18000,0.27,0.22,0.18,0.46,ST_SetSRID(ST_MakePoint(19.9320,50.0490),4326),0.38,0.88,0.79,0.85,'free')
 ON CONFLICT (slug) DO NOTHING;

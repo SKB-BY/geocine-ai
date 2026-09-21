@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-geocine}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-geocine}
+      POSTGRES_DB: ${POSTGRES_DB:-geocine}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-geocine} -d ${POSTGRES_DB:-geocine}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-geocine}:${POSTGRES_PASSWORD:-geocine}@db:5432/${POSTGRES_DB:-geocine}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8000,http://127.0.0.1:8000}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      FRONTEND_DIR: /frontend
+    ports:
+      - "8000:8000"
+
+volumes:
+  pgdata:

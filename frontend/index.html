@@ -3,44 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GeoCine AI</title>
+  <title>GeoCine AI — селфи, контент, кино</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="/assets/styles.css" />
 </head>
 <body>
   <aside class="sidebar">
-    <div class="brand">
-      <span class="logo">GC</span>
-      <div>
-        <strong>GeoCine AI</strong>
-        <small>GIS · Film · PropTech</small>
-      </div>
-    </div>
-    <label>Сцена / инвестиционный запрос</label>
-    <textarea id="query" rows="4">Эпическая битва на вершине горы с видом на город</textarea>
-    <label>Тип</label>
+    <div class="brand"><span class="logo">GC</span><div><strong>GeoCine AI</strong><small>Селфи · Контент · Кино · Инвест</small></div></div>
+    <label>Кто вы</label>
     <select id="kind">
-      <option value="">Авто</option>
-      <option value="film">Кино</option>
-      <option value="investment">Инвестиции</option>
-      <option value="both">Оба</option>
+      <option value="selfie">Селфи / прогулка</option>
+      <option value="content">Блогер / UGC</option>
+      <option value="film">Кино / клип</option>
+      <option value="investment">Инвестор</option>
     </select>
-    <label>Бюджет съёмок, USD</label>
-    <input id="budget" type="number" min="0" placeholder="не ограничен" />
-    <button id="analyze" type="button">Analyze with AI</button>
-    <button id="invest" type="button" class="ghost">Investment analysis</button>
-    <p class="hint">Демо-матчер: ключевые слова + PostGIS.</p>
+    <label>Что ищете</label>
+    <textarea id="query" rows="3">Красивое место для селфи в городе у воды, без толпы</textarea>
+    <label>Тариф</label>
+    <select id="plan">
+      <option value="free">Free — 8 поисков/день</option>
+      <option value="creator">Creator — $9.90</option>
+      <option value="studio">Studio — $149</option>
+      <option value="enterprise">Enterprise</option>
+    </select>
+    <button id="analyze" type="button">Найти локации</button>
+    <button id="invest" type="button" class="ghost">Инвест-анализ</button>
+    <p class="hint">Бесплатно для селфи. Creator — рилс. Studio — кино.</p>
+    <div id="quota" class="parsed"></div>
     <div id="parsed" class="parsed"></div>
     <div id="results" class="results"></div>
+    <hr class="split" />
+    <label>Добавить своё место</label>
+    <input id="spot-title" placeholder="Название точки" />
+    <textarea id="spot-desc" rows="2" placeholder="Почему здесь хорошо снимать"></textarea>
+    <button id="spot-send" type="button" class="ghost">Отправить на модерацию</button>
   </aside>
-  <main>
-    <header>
-      <h1>Location Scout</h1>
-      <span id="status">загрузка…</span>
-    </header>
-    <div id="map"></div>
-  </main>
+  <main><header><h1>Location Scout 0.2</h1><span id="status">загрузка…</span></header><div id="map"></div></main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="/assets/app.js"></script>
-</body>
-</html>
+</body></html>

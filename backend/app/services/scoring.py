@@ -1,54 +1,54 @@
 from __future__ import annotations
 
-KEYWORD_MAP: dict[str, list[str]] = {
-    "desert": ["desert", "пустын", "dune", "песк", "сахара", "morocco", "марокк", "arizona"],
+KEYWORD_MAP = {
+    "desert": ["desert", "пустын", "dune", "песк", "morocco", "марокк", "arizona"],
     "mountain": ["mountain", "гор", "peak", "вершин", "alps", "альп", "altai", "алтай"],
-    "city": ["city", "город", "skyline", "столиц", "urban", "downtown"],
-    "forest": ["forest", "лес", "taiga", "тайг", "беловеж", "pushcha"],
-    "water": ["lake", "озер", "river", "рек", "sea", "мор", "coast", "берег"],
-    "historic": ["fortress", "крепост", "castle", "замок", "ruins", "руин", "historic"],
-    "industrial": ["warehouse", "склад", "factory", "завод", "industrial", "промышл"],
-    "snow": ["snow", "снег", "winter", "зим", "ice", "лёд", "лед"],
-    "village": ["village", "деревн", "rural", "село"],
+    "city": ["city", "город", "skyline", "столиц", "urban", "мурал", "mural"],
+    "forest": ["forest", "лес", "taiga", "тайг", "беловеж"],
+    "water": ["lake", "озер", "river", "рек", "sea", "мор", "набереж"],
+    "historic": ["fortress", "крепост", "castle", "замок", "historic", "старый город"],
+    "industrial": ["warehouse", "склад", "factory", "завод", "сити"],
+    "snow": ["snow", "снег", "winter", "зим"],
+    "village": ["village", "деревн", "село"],
 }
-
+SELFIE_WORDS = ("селфи", "selfie", "фото", "рилс", "reels", "тикток", "tiktok", "инста", "контент", "блог")
+FILM_WORDS = ("съём", "съем", "film", "кино", "сцен", "битв", "клип")
+INVEST_WORDS = ("инвест", "invest", "недвиж", "roi", "доход")
 
 def parse_scene(text: str) -> dict:
     q = text.lower()
-    tags: list[str] = []
-    for tag, words in KEYWORD_MAP.items():
-        if any(word in q for word in words):
-            tags.append(tag)
-    kind = None
-    if any(w in q for w in ("инвест", "invest", "недвиж", "девелоп", "roi", "доход")):
+    tags = [tag for tag, words in KEYWORD_MAP.items() if any(w in q for w in words)]
+    kind = "content"
+    if any(w in q for w in INVEST_WORDS):
         kind = "investment"
-    elif any(w in q for w in ("съём", "съем", "film", "кино", "сцен", "battle", "битв")):
+    elif any(w in q for w in FILM_WORDS):
         kind = "film"
-    return {"tags": tags, "kind": kind, "raw": text, "engine": "rule-based-v1"}
+    elif any(w in q for w in SELFIE_WORDS):
+        kind = "selfie"
+    return {"tags": tags, "kind": kind, "raw": text, "engine": "rule-based-v2"}
 
+def clamp01(v: float) -> float:
+    return max(0.0, min(1.0, v))
 
-def clamp01(value: float) -> float:
-    return max(0.0, min(1.0, value))
-
-
-def match_score(parsed_tags: list[str], location_tags: list[str], distance_m: float | None) -> float:
-    if not parsed_tags:
-        tag_score = 0.55
-    else:
-        overlap = len(set(parsed_tags) & set(location_tags))
-        tag_score = overlap / max(len(parsed_tags), 1)
-    if distance_m is None:
-        dist_score = 0.7
-    else:
-        dist_score = clamp01(1.0 - (distance_m / 5_000_000.0))
+def match_score(parsed_tags, location_tags, distance_m):
+    tag_score = 0.55 if not parsed_tags else len(set(parsed_tags) & set(location_tags)) / max(len(parsed_tags), 1)
+    dist_score = 0.7 if distance_m is None else clamp01(1.0 - (distance_m / 5_000_000.0))
     return round(0.75 * tag_score + 0.25 * dist_score, 4)
 
-
-def investment_score(growth: float, flood: float, permit: float, weather: float) -> float:
+def investment_score(growth, flood, permit, weather):
     risk = 0.45 * flood + 0.30 * weather + 0.25 * permit
     return round(clamp01(0.65 * growth + 0.35 * (1.0 - risk)), 4)
 
-
-def final_scout_score(semantic: float, weather: float, flood: float, permit: float) -> float:
+def final_scout_score(semantic, weather, flood, permit):
     readiness = 1.0 - (0.4 * weather + 0.35 * flood + 0.25 * permit)
     return round(clamp01(0.55 * semantic + 0.45 * readiness), 4)
+
+def consumer_score(item, kind):
+    beauty = 0.5 * float(item.get("selfie_score") or 0.5) + 0.5 * float(item.get("content_score") or 0.5)
+    quiet = 1.0 - float(item.get("crowd_level") or 0.4)
+    safety = float(item.get("safety_score") or 0.7)
+    access_bonus = 0.08 if item.get("price_tier") == "free" else 0.0
+    base = 0.45 * beauty + 0.25 * quiet + 0.22 * safety + access_bonus
+    if kind == "selfie":
+        base = 0.7 * base + 0.3 * float(item.get("selfie_score") or 0.5)
+    return round(clamp01(base), 4)

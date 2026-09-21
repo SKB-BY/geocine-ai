@@ -1,33 +1,30 @@
 from __future__ import annotations
 
 KEYWORD_MAP = {
-    "desert": ["desert", "пустын", "dune", "песк", "morocco", "марокк", "arizona"],
-    "mountain": ["mountain", "гор", "peak", "вершин", "alps", "альп", "altai", "алтай"],
+    "desert": ["desert", "пустын", "dune", "песк", "morocco", "arizona"],
+    "mountain": ["mountain", "горы", "горах", "горный", "вершин", "alps", "альп", "altai", "алтай"],
     "city": ["city", "город", "skyline", "столиц", "urban", "мурал", "mural"],
-    "forest": ["forest", "лес", "taiga", "тайг", "беловеж"],
-    "water": ["lake", "озер", "river", "рек", "sea", "мор", "набереж"],
-    "historic": ["fortress", "крепост", "castle", "замок", "historic", "старый город"],
-    "industrial": ["warehouse", "склад", "factory", "завод", "сити"],
-    "snow": ["snow", "снег", "winter", "зим"],
+    "forest": ["forest", "лесу", "леса", "тайг", "беловеж"],
+    "water": ["lake", "озер", "river", "река", "реки", "sea", "море", "набереж", "вода", "воды", "у воды"],
+    "historic": ["крепост", "замок", "historic", "старый город"],
+    "industrial": ["завод", "industrial", "сити"],
+    "snow": ["snow", "снег", "зим"],
     "village": ["village", "деревн", "село"],
 }
-SELFIE_WORDS = ("селфи", "selfie", "фото", "рилс", "reels", "тикток", "tiktok", "инста", "контент", "блог")
-FILM_WORDS = ("съём", "съем", "film", "кино", "сцен", "битв", "клип")
-INVEST_WORDS = ("инвест", "invest", "недвиж", "roi", "доход")
+SELFIE_WORDS = ("селфи", "selfie", "фото", "рилс", "reels", "tiktok", "инста", "контент", "блог")
+FILM_WORDS = ("съём", "съем", "film", "кино", "сцен", "клип")
+INVEST_WORDS = ("инвест", "invest", "недвиж", "roi")
 
 def parse_scene(text: str) -> dict:
     q = text.lower()
-    tags = [tag for tag, words in KEYWORD_MAP.items() if any(w in q for w in words)]
+    tags = [tag for tag, words in KEYWORD_MAP.items() if any(word in q for word in words)]
     kind = "content"
-    if any(w in q for w in INVEST_WORDS):
-        kind = "investment"
-    elif any(w in q for w in FILM_WORDS):
-        kind = "film"
-    elif any(w in q for w in SELFIE_WORDS):
-        kind = "selfie"
+    if any(w in q for w in INVEST_WORDS): kind = "investment"
+    elif any(w in q for w in FILM_WORDS): kind = "film"
+    elif any(w in q for w in SELFIE_WORDS): kind = "selfie"
     return {"tags": tags, "kind": kind, "raw": text, "engine": "rule-based-v2"}
 
-def clamp01(v: float) -> float:
+def clamp01(v):
     return max(0.0, min(1.0, v))
 
 def match_score(parsed_tags, location_tags, distance_m):

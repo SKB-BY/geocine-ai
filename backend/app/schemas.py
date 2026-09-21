@@ -32,7 +32,7 @@ class ScoutRequest(BaseModel):
     radius_km: float = Field(default=5000, ge=1, le=20000)
     budget_usd: int | None = Field(default=None, ge=0)
     plan_code: str = "free"
-    limit: int = Field(default=12, ge=1, le=50)
+    limit: int = Field(default=20, ge=1, le=50)
 
 class ScoutResponse(BaseModel):
     query: str
@@ -45,4 +45,4 @@ class InvestmentRequest(BaseModel):
     lat: float | None = None
     radius_km: float = Field(default=500, ge=1, le=20000)
     max_risk: float = Field(default=0.6, ge=0, le=1)
-    limit: int = Field(default=12, ge=1, le=50)
+    limit: int = Field(default=20, ge=1, le=50)

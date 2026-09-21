@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GeoCine AI</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="logo">GC</span>
+      <div>
+        <strong>GeoCine AI</strong>
+        <small>GIS · Film · PropTech</small>
+      </div>
+    </div>
+    <label>Сцена / инвестиционный запрос</label>
+    <textarea id="query" rows="4">Эпическая битва на вершине горы с видом на город</textarea>
+    <label>Тип</label>
+    <select id="kind">
+      <option value="">Авто</option>
+      <option value="film">Кино</option>
+      <option value="investment">Инвестиции</option>
+      <option value="both">Оба</option>
+    </select>
+    <label>Бюджет съёмок, USD</label>
+    <input id="budget" type="number" min="0" placeholder="не ограничен" />
+    <button id="analyze" type="button">Analyze with AI</button>
+    <button id="invest" type="button" class="ghost">Investment analysis</button>
+    <p class="hint">Демо-матчер: ключевые слова + PostGIS.</p>
+    <div id="parsed" class="parsed"></div>
+    <div id="results" class="results"></div>
+  </aside>
+  <main>
+    <header>
+      <h1>Location Scout</h1>
+      <span id="status">загрузка…</span>
+    </header>
+    <div id="map"></div>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/assets/app.js"></script>
+</body>
+</html>

@@ -7,7 +7,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from app.config import settings
 from app.db import close, connect
-from app.routers import billing, investments, locations, payments, scout, spots, studios, tiles
+from app.routers import billing, film, investments, locations, payments, scout, spots, studios, tiles
 
 FRONTEND_DIR = Path(os.environ.get("FRONTEND_DIR", str(Path(__file__).resolve().parents[2] / "frontend")))
 
@@ -17,16 +17,10 @@ async def lifespan(_: FastAPI):
     yield
     await close()
 
-app = FastAPI(title="GeoCine AI", version="0.3.0", description="Селфи, контент, киностудии, инвестиции.", lifespan=lifespan)
+app = FastAPI(title="GeoCine AI", version="0.3.1", description="Селфи, контент, натура для кино, студии.", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origin_list or ["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
-app.include_router(locations.router)
-app.include_router(scout.router)
-app.include_router(investments.router)
-app.include_router(tiles.router)
-app.include_router(billing.router)
-app.include_router(spots.router)
-app.include_router(payments.router)
-app.include_router(studios.router)
+for r in (locations, scout, investments, tiles, billing, spots, payments, studios, film):
+    app.include_router(r.router)
 
 @app.get("/api/health")
 async def health():

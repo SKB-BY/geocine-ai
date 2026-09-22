@@ -3,43 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GeoCine AI — селфи, контент, киностудии</title>
+  <title>GeoCine AI</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="/assets/styles.css" />
 </head>
 <body>
   <aside class="sidebar">
-    <div class="brand"><span class="logo">GC</span><div><strong>GeoCine AI</strong><small>Селфи · Контент · Киностудии · Инвест</small></div></div>
+    <div class="brand"><span class="logo">GC</span><div><strong>GeoCine AI</strong><small>Селфи · Контент · Кино</small></div></div>
     <label>Кто вы</label>
     <select id="kind">
-      <option value="selfie">Селфи / прогулка</option>
-      <option value="content">Блогер / UGC</option>
-      <option value="film">Киностудия / продакшн</option>
+      <option value="selfie">Селфи</option>
+      <option value="content">Блогер</option>
+      <option value="film">Кино / клип</option>
       <option value="investment">Инвестор</option>
     </select>
     <label>Что ищете</label>
-    <textarea id="query" rows="3">Павильон или LED volume под интерьер, группа 80 человек</textarea>
+    <textarea id="query" rows="3">Улочки со зданиями 18-19 века</textarea>
+    <label>Эпоха архитектуры</label>
+    <select id="epoch">
+      <option value="">По тексту запроса</option>
+      <option value="medieval">Средневековье / крепость</option>
+      <option value="baroque">Барокко</option>
+      <option value="classicism">Классицизм</option>
+      <option value="empire">Ампир</option>
+      <option value="eclectic">Эклектика / XIX век</option>
+      <option value="art_nouveau">Модерн</option>
+      <option value="wooden">Деревянный город</option>
+      <option value="constructivism">Конструктивизм</option>
+      <option value="stalinist">Сталинский ампир</option>
+    </select>
     <label>Тариф</label>
     <select id="plan">
       <option value="free">Free</option>
-      <option value="creator">Creator — $9.90</option>
-      <option value="studio" selected>Studio — $149</option>
-      <option value="enterprise">Enterprise</option>
+      <option value="creator">Creator</option>
+      <option value="studio">Studio</option>
     </select>
     <button id="analyze" type="button">Найти локации</button>
     <button id="studios" type="button" class="ghost">Студии и павильоны</button>
     <button id="invest" type="button" class="ghost">Инвест-анализ</button>
-    <p class="hint">Студиям: павильон, бэклот, LED, пермит, Unreal.</p>
+    <p class="hint">Эпоху можно выбрать или написать словами в запросе.</p>
     <div id="quota" class="parsed"></div>
     <div id="parsed" class="parsed"></div>
     <div id="results" class="results"></div>
-    <hr class="split" />
-    <label>Добавить своё место</label>
-    <input id="spot-title" placeholder="Название точки" />
-    <textarea id="spot-desc" rows="2" placeholder="Почему здесь хорошо снимать"></textarea>
-    <button id="spot-send" type="button" class="ghost">Отправить на модерацию</button>
   </aside>
-  <main><header><h1>Location Scout 0.3</h1><span id="status">загрузка…</span></header><div id="map"></div></main>
+  <main><header><h1>Location Scout</h1><span id="status">загрузка…</span></header><div id="map"></div></main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="/assets/app.js"></script>
 </body></html>

@@ -8,47 +8,47 @@ function renderMarkers(items) {
   layer.clearLayers();
   const bounds = [];
   for (const item of items) {
+    if (item.lat == null) continue;
     const marker = L.circleMarker([item.lat, item.lon], { radius: 8, color: kindColor(item.kind), fillColor: kindColor(item.kind), fillOpacity: 0.9, weight: 1 }).addTo(layer);
-    marker.bindPopup(`<b>${item.name}</b><br>${item.city || item.region || ""} ${item.country || ""}` +
-      (item.facility_type ? `<br>${item.facility_type} · павильонов ${item.stages_count || "—"}` : "") +
-      (item.virtual_production ? "<br>virtual production / LED" : "") +
-      (item.day_rate_usd_from ? `<br>день от $${item.day_rate_usd_from}` : "") +
-      (item.permit_office ? `<br>пермит: ${item.permit_office}` : ""));
+    marker.bindPopup(`<b>${item.name}</b><br>${item.city || ""} ${item.country || ""}` + (item.why ? `<br>${item.why}` : ""));
     bounds.push([item.lat, item.lon]);
   }
-  if (bounds.length) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 5 });
+  if (bounds.length) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 6 });
 }
 function renderCards(items) {
   document.getElementById("results").innerHTML = items.map((item) => `
-    <article class="card"><h3>${item.name}</h3>
-    <p>${item.city || item.region || ""} ${item.country || ""}</p>
-    <div class="meta"><span>${item.facility_type || item.kind}</span>
-    <span>${item.virtual_production ? "LED/VP" : (item.price_tier || "")}</span>
-    <span>${item.day_rate_usd_from ? "от $" + item.day_rate_usd_from : ""}</span></div>
-    ${item.permit_office ? `<p>пермит: ${item.permit_office}</p>` : ""}</article>`).join("");
+    <article class="card">
+      <h3>${item.name}</h3>
+      <p>${item.city || item.region || ""} ${item.country || ""}</p>
+      ${item.why ? `<p>${item.why}</p>` : ""}
+      ${item.photos && item.photos.length ? `<div class="shots">${item.photos.slice(0,5).map((p) => `<img src="${p.url}" alt="${p.title || item.name}" loading="lazy">`).join("")}</div>` : ""}
+    </article>`).join("");
 }
 async function loadAll() {
-  const film = document.getElementById("kind").value === "film";
-  const res = await fetch(film ? "/api/studios" : "/api/locations");
+  const res = await fetch("/api/locations");
   if (!res.ok) throw new Error("Сервер не отвечает");
   const data = await res.json();
   renderMarkers(data.items); renderCards(data.items);
-  document.getElementById("status").textContent = film ? `${data.count} студий` : `${data.count} точек`;
+  document.getElementById("status").textContent = `${data.count} точек`;
 }
 async function runScout(path) {
-  const body = { query: document.getElementById("query").value.trim(), kind: document.getElementById("kind").value, plan_code: document.getElementById("plan").value, limit: 20, lon: map.getCenter().lng, lat: map.getCenter().lat, radius_km: 200 };
+  const body = { query: document.getElementById("query").value.trim(), kind: document.getElementById("kind").value, plan_code: document.getElementById("plan").value, limit: 12, lon: map.getCenter().lng, lat: map.getCenter().lat };
   document.getElementById("status").textContent = "ищем…";
   const res = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
   const data = await res.json();
-  if (!res.ok) { document.getElementById("status").textContent = (data.detail && data.detail.message) || "не вышло"; return; }
-  renderMarkers(data.results); renderCards(data.results);
-  document.getElementById("status").textContent = `нашли ${data.results.length}`;
+  if (!res.ok) { document.getElementById("status").textContent = "не вышло"; return; }
+  renderMarkers(data.results || []); renderCards(data.results || []);
+  document.getElementById("status").textContent = `нашли ${(data.results || []).length}`;
 }
 document.getElementById("analyze").addEventListener("click", () => {
   const film = document.getElementById("kind").value === "film";
-  runScout(film ? "/api/studios/search" : "/api/scout");
+  runScout(film ? "/api/film/locations" : "/api/scout");
 });
 const st = document.getElementById("studios");
 if (st) st.addEventListener("click", () => { document.getElementById("kind").value = "film"; runScout("/api/studios/search"); });
 document.getElementById("invest").addEventListener("click", () => runScout("/api/investments/analyze"));
+const kindSel = document.getElementById("kind");
+if (kindSel) kindSel.addEventListener("change", () => {
+  if (kindSel.value === "film") document.getElementById("query").value = "Улочки со зданиями 18-19 века";
+});
 loadAll().catch((e) => { document.getElementById("status").textContent = e.message; });
